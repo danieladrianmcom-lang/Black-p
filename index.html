@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#09070f">
+<meta name="description" content="Plano 20K - controle de faturamento, lançamentos e calendário">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+<title>Plano 20K</title>
+</head>
+<body>
+<header class="app-header">
+  <div class="brand"><div class="logo">20K</div><div><h1>Plano 20K</h1><p>Rumo aos R$ 20.000</p></div></div>
+  <button id="installBtn" class="icon-btn hidden">＋</button>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-top"><div><span class="eyebrow">ACUMULADO</span><div id="totalSaved" class="big-number">R$ 0,00</div></div><div id="percent" class="percent">0%</div></div>
+    <div class="progress"><div id="progressBar"></div></div>
+    <div class="hero-bottom"><span>Meta R$ 20.000,00</span><span id="remaining">Faltam R$ 20.000,00</span></div>
+  </section>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="calendar">📅<span>Calendário</span></button>
+    <button class="tab" data-tab="revenue">💰<span>Faturamento</span></button>
+    <button class="tab" data-tab="entries">🧾<span>Lançamentos</span></button>
+  </nav>
+
+  <section id="calendarTab" class="tab-content active">
+    <div class="panel">
+      <div class="month-nav"><button id="prev">‹</button><div><h2 id="monthTitle"></h2><p>Toque em um dia para abrir os lançamentos</p></div><button id="next">›</button></div>
+      <div class="weekdays"><span>DOM</span><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span></div>
+      <div id="calendar" class="calendar"></div>
+      <div class="legend">
+        <span><i class="dot revenue"></i> Faturamento</span>
+        <span><i class="dot expense"></i> Gastos</span>
+        <span>🏍️ Qui: moto R$365</span>
+        <span>🏠 Dia 10: aluguel R$550</span>
+        <span>📄 Dia 22: conta R$340</span>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Resumo dos 6 meses</h2>
+      <div class="mini-grid">
+        <div><span>Faturamento</span><b id="sixRevenue">R$ 0,00</b></div>
+        <div><span>Gastos</span><b id="sixExpenses">R$ 0,00</b></div>
+        <div><span>Líquido</span><b id="sixNet">R$ 0,00</b></div>
+        <div><span>Dias lançados</span><b id="daysUsed">0</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="revenueTab" class="tab-content">
+    <div class="panel">
+      <div class="panel-title"><div><h2>Faturamento</h2><p>Registre cada corrida durante o dia.</p></div><button id="quickRevenue" class="primary small">+ Faturar</button></div>
+      <div class="revenue-card">
+        <span>Hoje</span><strong id="revToday">R$ 0,00</strong><small>Meta de referência: R$ 300/dia</small>
+      </div>
+      <div class="stats-row">
+        <div><span>Esta semana</span><b id="revWeek">R$ 0,00</b></div>
+        <div><span>Este mês</span><b id="revMonth">R$ 0,00</b></div>
+        <div><span>Média/dia lançado</span><b id="revAvg">R$ 0,00</b></div>
+      </div>
+      <h3>Faturamento por dia</h3>
+      <div id="revenueList" class="list"></div>
+    </div>
+  </section>
+
+  <section id="entriesTab" class="tab-content">
+    <div class="panel">
+      <div class="panel-title"><div><h2>Novo lançamento</h2><p>Você decide o que entra. Nada é descontado automaticamente.</p></div></div>
+      <form id="entryForm">
+        <label>Data<input id="date" type="date" required></label>
+        <label>Tipo<select id="type"><option value="income">Faturamento</option><option value="expense">Gasto</option></select></label>
+        <label>Categoria<select id="category"></select></label>
+        <label>Valor (R$)<input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="Ex.: 50,00" required></label>
+        <label class="wide">Observação<input id="note" maxlength="100" placeholder="Ex.: corrida, almoço, gasolina..."></label>
+        <button class="primary wide" type="submit">＋ Adicionar lançamento</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title"><div><h2>Meus lançamentos</h2><p>Filtre e acompanhe tudo o que você registrou.</p></div></div>
+      <div class="filters">
+        <input id="filterDate" type="date" aria-label="Filtrar por data">
+        <select id="filterType"><option value="all">Todos os tipos</option><option value="income">Faturamentos</option><option value="expense">Gastos</option></select>
+        <select id="filterCategory"><option value="all">Todas as categorias</option></select>
+      </div>
+      <div id="allEntries" class="list"></div>
+    </div>
+  </section>
+</main>
+
+<div id="dayModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="panel-title"><div><h2 id="modalDate"></h2><p id="modalTotals"></p></div><button id="closeModal" class="icon-btn">✕</button></div>
+    <div id="modalBills" class="bills"></div>
+    <div id="modalEntries" class="list"></div>
+    <button id="modalAdd" class="primary wide">＋ Lançar neste dia</button>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
